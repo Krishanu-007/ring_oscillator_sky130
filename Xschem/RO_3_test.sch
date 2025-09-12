@@ -17,9 +17,9 @@ C {vsource.sym} 1670 -245 0 0 {name=Vdd value=1.8 savecurrent=false}
 C {vdd.sym} 1670 -275 0 0 {name=l3 lab=VDD}
 C {gnd.sym} 1670 -215 0 0 {name=l4 lab=GND}
 C {opin.sym} 1410 -255 0 0 {name=p1 lab=Out}
-C {code_shown.sym} 1085 -515 0 0 {name=Testbench only_toplevel=false value=".lib /usr/local/share/pdk/sky130B/libs.tech/ngspice/sky130.lib.spice tt
+C {code_shown.sym} 1375 -515 0 0 {name=Testbench only_toplevel=false value=".lib /usr/local/share/pdk/sky130B/libs.tech/ngspice/sky130.lib.spice tt
 .ic V(Out)=0.01
-.tran 100ps 10ns
+.tran 10ps 30ns
 .options reltol=1e-4 abstol=1e-12 vntol=1e-6
 .savecurrent
 .save all

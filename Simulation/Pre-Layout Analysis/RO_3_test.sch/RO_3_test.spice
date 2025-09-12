@@ -1,0 +1,48 @@
+** sch_path: /home/krishanu/Desktop/ring_oscillator_sky130/Xschem/RO_3_test.sch
+**.subckt RO_3_test Out
+*.opin Out
+x1 VDD Out GND Ring_Osc_3
+Vdd VDD GND 1.8
+**** begin user architecture code
+
+.lib /usr/local/share/pdk/sky130B/libs.tech/ngspice/sky130.lib.spice tt
+.ic V(Out)=0.01
+.tran 10ps 30ns
+.options reltol=1e-4 abstol=1e-12 vntol=1e-6
+.savecurrent
+.save all
+.end
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  Ring_Osc_3.sym # of pins=3
+** sym_path: /home/krishanu/Desktop/ring_oscillator_sky130/Xschem/Ring_Osc_3.sym
+** sch_path: /home/krishanu/Desktop/ring_oscillator_sky130/Xschem/Ring_Osc_3.sch
+.subckt Ring_Osc_3 Vdd Out Vss
+*.opin Out
+*.ipin Vss
+*.ipin Vdd
+x1 Vdd Out net1 Vss inv
+x2 Vdd net1 net2 Vss inv
+x3 Vdd net2 Out Vss inv
+.ends
+
+
+* expanding   symbol:  inv.sym # of pins=4
+** sym_path: /home/krishanu/Desktop/ring_oscillator_sky130/Xschem/inv.sym
+** sch_path: /home/krishanu/Desktop/ring_oscillator_sky130/Xschem/inv.sch
+.subckt inv Vdd Vin Vout Vss
+*.ipin Vin
+*.ipin Vss
+*.ipin Vdd
+*.opin Vout
+XM1 Vout Vin Vss GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 Vout Vin Vdd VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+.GLOBAL GND
+.GLOBAL VDD
+.end

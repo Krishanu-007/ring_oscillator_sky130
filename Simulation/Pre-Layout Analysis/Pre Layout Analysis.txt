@@ -1,0 +1,8 @@
+Pre-Layout Analysis:
+
+1) Frequency of Operation = 7.064 GHz
+2) Timings- Rise Time = 14.39 ps, Fall Time = 17.62 ps
+3) Vmax = 1.91 V, Vmin= -0.06 V
+4) Average Power= 481 uW
+
+
