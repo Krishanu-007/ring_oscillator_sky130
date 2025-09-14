@@ -170,7 +170,7 @@ Talking about the power consumption of the ring oscillator, it is essential to c
 <p align="center">
   <img src="Images/Schematic/VDD_current.png" alt="Power Consumption" width="800"/>
 </p>
-From the above waveform, the current drawn from the power supply (VDD) is observed. The average current (I_avg) can be calculated by measuring the area under the current waveform over a complete oscillation cycle and dividing it by the time period (T). The power consumption (P) can then be calculated using the formula: `P = VDD * I_avg` 
+From the above waveform, the current drawn from the power supply (VDD) is observed. The average current (I_avg) can be calculated by measuring the area under the current waveform over a complete oscillation cycle and dividing it by the time period (T). The power consumption (P) can then be calculated using the formula: P = VDD * I_avg 
 
 - **Power Consumption**: `481 µW (approx)`
 
@@ -193,113 +193,101 @@ The RO draws **~481 / 17 ≈ 28.3×** more power overall. This document shows wh
 #### Governing equations
 The dominant term for CMOS dynamic power is:
 
-\[
+$$
 P_{dyn} = \alpha\, C_L\, V_{DD}^2\, f
-\]
+$$
 
 where:
-- \(\alpha\) = activity factor (fraction of time a node switches). For a free-running RO \(\alpha \approx 1\).
-- \(C_L\) = effective capacitance at the switching node.
-- \(V_{DD}\) = supply voltage.
-- \(f\) = switching frequency (for a ring oscillator node toggling at \(f\), use \(f_{RO}\) directly).
+- $\alpha$ = activity factor (fraction of time a node switches). For a free-running RO $\alpha \approx 1$.
+- $C_L$ = effective capacitance at the switching node.
+- $V_{DD}$ = supply voltage.
+- $f$ = switching frequency (for a ring oscillator node toggling at $f$, use $f_{RO}$ directly).
 
-For an odd \(N\)-stage ring oscillator:
-\[
-T = \frac{1}{f_{RO}} = 2 N\, t_{pd} \quad\Rightarrow\quad
-t_{pd} = \frac{1}{2 N f_{RO}}
-\]
+For an odd $N$-stage ring oscillator:
 
-#### Numeric Analysis (with f_RO = 7.06 GHz)
+$$
+T = \frac{1}{f_{RO}} = 2N\,t_{pd} \quad\Rightarrow\quad
+t_{pd} = \frac{1}{2N f_{RO}}
+$$
+
+
+#### Numeric Analysis (with $f_{RO} = 7.06\ \text{GHz}$)
 
 ##### 1) RO period and per-stage delay
-- Measured oscillation frequency:
-  \[
-  f_{RO} = 7.06\ \text{GHz} = 7.06 \times 10^{9}\ \text{Hz}
-  \]
+- Measured oscillation frequency:  
+  $f_{RO} = 7.06\ \text{GHz} = 7.06 \times 10^{9}\ \text{Hz}$  
 
-- Oscillation period:
-  \[
-  T = \frac{1}{f_{RO}} = \frac{1}{7.06 \times 10^{9}}
-  = 1.416 \times 10^{-10}\ \text{s} = 141.64\ \text{ps}
-  \]
+- Oscillation period:  
+  $T = \frac{1}{f_{RO}} = \frac{1}{7.06 \times 10^{9}}
+  = 1.416 \times 10^{-10}\ \text{s} = 141.64\ \text{ps}$  
 
-- For a 3-stage ring oscillator (\(N=3\)):
-  \[
-  t_{pd,RO} = \frac{T}{2N} = \frac{141.64\ \text{ps}}{6}
-  = 23.61\ \text{ps (per stage)}
-  \]
+- For a 3-stage ring oscillator ($N=3$):  
+  $t_{pd,RO} = \frac{T}{2N} = \frac{141.64\ \text{ps}}{6}
+  = 23.61\ \text{ps (per stage)}$
 
-**Result:** each inverter in the RO contributes an average propagation delay of ~**23.61 ps**.
+**Result:** each inverter in the RO contributes an average propagation delay of ~**23.61 ps**.  
+
 **Note:** The inverter delay measured in isolation (~41 ps) differs from the effective per-stage delay inferred from the RO (~23.61 ps). This is due to differences in loading conditions: in the RO each inverter directly drives the next stage’s input capacitance, while in the standalone measurement the load was lighter. Hence the delay extracted from frequency is smaller.
 
 ##### 2) Per-stage RO power
-- Total measured RO power:
-  \[
-  P_{RO} = 481\ \mu\text{W}
-  \]
+- Total measured RO power:  
+  $P_{RO} = 481\ \mu\text{W}$  
 
-- Divide by number of stages:
-  \[
-  P_{\text{stage,RO}} = \frac{481}{3} = 160.33\ \mu\text{W}
-  \]
+- Divide by number of stages:  
+  $P_{\text{stage,RO}} = \frac{481}{3} = 160.33\ \mu\text{W}$  
+
 
 ##### 3) Effective capacitance per RO stage
-Using the CMOS dynamic power model:
-\[
-P = \alpha \, C \, V_{DD}^2 \, f
-\]
-with \(\alpha = 1\) (continuous toggling) and \(V_{DD} = 1.8\ \text{V}\):
+Using the CMOS dynamic power model:  
+$P = \alpha \ C \ V_{DD}^2 \ f$  
+with $\alpha = 1$ (continuous toggling) and $V_{DD} = 1.8\ \text{V}$:
 
-\[
+$$
 C_{\text{eff}} = \frac{P_{\text{stage,RO}}}{V_{DD}^2 f_{RO}}
 = \frac{160.33 \times 10^{-6}}{(1.8^2)(7.06 \times 10^9)}
-\]
-
-\[
-= \frac{1.6033 \times 10^{-4}}{3.24 \times 7.06 \times 10^9}
 = 7.0 \times 10^{-15}\ \text{F}
-\]
+$$
 
 **Result:** each RO stage effectively drives ≈ **7.0 fF** of capacitance.
 
 ##### 4) Capacitance from single-inverter measurement
-- Single-inverter power: \(P_{inv} = 17\ \mu\text{W} = 1.7\times10^{-5}\ \text{W}\)  
-- Maximum switching frequency: \(f_{\text{inv,max}} = 24.4\ \text{GHz}\)
+- Single-inverter power: $P_{inv} = 17\ \mu\text{W} = 1.7\times10^{-5}\ \text{W}$  
+- Maximum switching frequency: $f_{\text{inv,max}} = 24.4\ \text{GHz}$
 
-\[
+$$
 C_{inv} = \frac{P_{inv}}{V_{DD}^2 f_{\text{inv,max}}}
 = \frac{1.7 \times 10^{-5}}{3.24 \times 24.4 \times 10^{9}}
 = 2.15 \times 10^{-16}\ \text{F} = 0.215\ \text{fF}
-\]
+$$
 
 **Result:** the single inverter test saw only ~**0.215 fF** of load.
 
 ##### 5) Ratio of effective capacitances
-\[
+$$
 \frac{C_{\text{eff}}}{C_{inv}} = \frac{7.0}{0.215} \approx 32.6
-\]
+$$
 
 **Interpretation:** each inverter inside the RO sees ~**33× larger capacitance** than the isolated inverter test.
 
 ##### 6) Predicting RO power from single-inverter data
 Scaling the single inverter result:
 
-\[
+$$
 P_{\text{stage,pred}} = P_{inv} \times
 \left(\frac{C_{\text{eff}}}{C_{inv}}\right) \times
 \left(\frac{f_{RO}}{f_{\text{inv,max}}}\right)
-\]
+$$
 
-\[
+$$
 = 17\ \mu\text{W} \times 32.6 \times \frac{7.06}{24.4}
-\]
+$$
 
 Step by step:
-- \(32.6 \times (7.06/24.4) = 9.42\)
-- \(17 \times 9.42 = 160.1\ \mu\text{W}\)
+- $32.6 \times (7.06/24.4) = 9.42$
+- $17 \times 9.42 = 160.1\ \mu\text{W}$
 
 Per stage: ~**160 µW**  
-Total RO: \(3 \times 160 = 480 µW\)
+Total RO: $3 \times 160 = 480\ \mu\text{W}$
 
 ##### 7) Consistency check
 - **Predicted RO power:** ~**480 µW**  
@@ -307,7 +295,7 @@ Total RO: \(3 \times 160 = 480 µW\)
 
 The match is excellent → the power difference is fully explained by:
 1. Larger effective capacitance in the RO (~7.0 fF vs 0.215 fF), and  
-2. Continuous toggling at GHz frequency (\(\alpha \approx 1\)).
+2. Continuous toggling at GHz frequency ($\alpha \approx 1$).
 
 
 Now there's another interesting observation:
